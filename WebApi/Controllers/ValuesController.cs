@@ -12,7 +12,15 @@ namespace WebApi.Controllers
         const int MEDIUM_SIZE = 50 * 1024 * 1024;
         const int LARGE_SIZE = 100 * 1024 * 1024;
 
-        public Models.Directory Get(string path)
+        enum FileSize
+        {
+            SMALL,
+            MEDIUM,
+            LARGE,
+            LARGEST
+        }
+
+        public Models.Directory Get([QueryString("path")] string path)
         {
             if (path == null)
             {
@@ -23,8 +31,8 @@ namespace WebApi.Controllers
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             return directory;
         }
-        
-        private void SeePath([QueryString("path")] string path)
+
+        private void SeePath(string path)
         {
             var attributes = File.GetAttributes(path);
             if ((attributes & FileAttributes.Directory) == FileAttributes.Directory)
@@ -67,13 +75,15 @@ namespace WebApi.Controllers
             var dirs = dirInfo.GetDirectories();
             var counts = files.GroupBy(f =>
             {
-                return f.Length < SMALL_SIZE ? 0 :
-                    f.Length < MEDIUM_SIZE ? 1 :
-                    f.Length > LARGE_SIZE ? 2 :
-                    3;
+                return f.Length < SMALL_SIZE ? FileSize.SMALL :
+                    f.Length < MEDIUM_SIZE ? FileSize.MEDIUM :
+                    f.Length < LARGE_SIZE ? FileSize.LARGE :
+                    FileSize.LARGEST;
             })
-            .Select(g => g.Count())
-            .ToList();
+            .ToDictionary(
+                group => group.Key,
+                group => group.Count()
+            );
 
             var directory = new Models.Directory();
 
@@ -97,12 +107,12 @@ namespace WebApi.Controllers
 
             directory.Path = path;
 
-            if (counts.Count > 0)
-                directory.SmallFilesCount = counts[0];
-            if (counts.Count > 1)
-                directory.MediumFilesCount = counts[1];
-            if (counts.Count > 2)
-                directory.LargeFilesCount = counts[2];
+            if (counts.ContainsKey(FileSize.SMALL))
+                directory.SmallFilesCount = counts[FileSize.SMALL];
+            if (counts.ContainsKey(FileSize.MEDIUM))
+                directory.MediumFilesCount = counts[FileSize.MEDIUM];
+            if (counts.ContainsKey(FileSize.LARGEST))
+                directory.LargeFilesCount = counts[FileSize.LARGEST];
 
             return directory;
         }

@@ -1,8 +1,8 @@
 ﻿@model WebApi.Models.Directory
 
 <div ng-app="dirViewApp">
-    <div class="container" ng-controller="dir_view">
-        <table class="col-md-4 table table-bordered table-condensed" >
+    <div class="container dir_view" ng-controller="dir_view">
+        <table class="col-md-4 table table-bordered table-condensed counts-table" >
             <thead>
                 <tr>
                     <th>Less 10Mb</th>
@@ -18,14 +18,12 @@
                 </tr>
             </tbody>
         </table>
-        <input ng-model="path" ></input>
-        <button ng-click="open()">open</button>
         <p class="current-path">
             Current path: <span class="path">{{ dir.Path }}</span>
         </p>
-        <ul>
+        <ul class="list-unstyled directory-content">
             <li ng-repeat="file in dir.Directories"><a href="#" ng-click="open(file.Path)">{{ file.Name }}</a></li>
-            <li ng-repeat="file in dir.Files"><a href="#" ng-click="open(file.Path)">{{ file.Name }}</a></li>
+            <li ng-repeat="file in dir.Files">{{ file.Name }}</li>
         </ul>
     </div>
 </div>

@@ -16,6 +16,37 @@ textarea {
     max-width: 280px;
 }
 
-.table>thead>tr {
-  background-color:lightgrey;
-} 
+.dir_view {
+  background-color: #f3f3f3;
+  padding:15px;
+  height:100%;
+}
+
+.counts-table thead {
+  background: darkgray;
+}
+
+.current-path {
+  font-weight: bold;
+}
+
+.path {
+  color: gray;
+  font-weight:normal;
+}
+
+.counts-table td {
+  text-align: center;
+}
+
+.counts-table>thead>tr>th {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  border:none;
+}
+
+.directory-content{
+  padding:14px;
+  border: solid 1px lightgray;
+}
