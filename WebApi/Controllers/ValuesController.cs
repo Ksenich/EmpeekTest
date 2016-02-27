@@ -22,7 +22,7 @@ namespace WebApi.Controllers
 
         public Models.Directory Get([QueryString("path")] string path)
         {
-            if (path == null)
+            if (path == null || path == "")
             {
                 return SeeDrives();
             }
@@ -30,23 +30,6 @@ namespace WebApi.Controllers
             if (directory == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             return directory;
-        }
-
-        private void SeePath(string path)
-        {
-            var attributes = File.GetAttributes(path);
-            if ((attributes & FileAttributes.Directory) == FileAttributes.Directory)
-            {
-                SeeDir(path);
-            }
-            else
-            {
-                SeeFile(path);
-            }
-        }
-
-        private void SeeFile(string path)
-        {
         }
 
         private Models.Directory SeeDrives()
@@ -91,7 +74,8 @@ namespace WebApi.Controllers
                                select new Models.DirectoryItem
                                {
                                    Name = file.Name,
-                                   Path = file.FullName
+                                   Path = file.FullName,
+                                   Size = file.Length
                                }).ToList();
             directory.Directories = (from dir in dirs
                                      select new Models.DirectoryItem

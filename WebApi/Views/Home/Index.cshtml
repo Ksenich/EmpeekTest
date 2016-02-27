@@ -22,8 +22,8 @@
             Current path: <span class="path">{{ dir.Path }}</span>
         </p>
         <ul class="list-unstyled directory-content">
-            <li ng-repeat="file in dir.Directories"><a href="#" ng-click="open(file.Path)">{{ file.Name }}</a></li>
-            <li ng-repeat="file in dir.Files">{{ file.Name }}</li>
+            <li ng-repeat="file in dir.Directories"><a ng-click="open(file.Path)">{{ file.Name }}</a></li>
+            <li ng-repeat="file in dir.Files"><a ng-href="?path={{ file.Path }}">{{ file.Name }}</a> - {{ file.Size | number }}</li>
         </ul>
     </div>
 </div>
