@@ -74,8 +74,7 @@ namespace WebApi.Controllers
                                select new Models.DirectoryItem
                                {
                                    Name = file.Name,
-                                   Path = file.FullName,
-                                   Size = file.Length
+                                   Path = file.FullName
                                }).ToList();
             directory.Directories = (from dir in dirs
                                      select new Models.DirectoryItem

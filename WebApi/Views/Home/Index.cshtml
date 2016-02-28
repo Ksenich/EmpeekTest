@@ -23,7 +23,7 @@
         </p>
         <ul class="list-unstyled directory-content">
             <li ng-repeat="file in dir.Directories"><a ng-click="open(file.Path)">{{ file.Name }}</a></li>
-            <li ng-repeat="file in dir.Files"><a ng-href="?path={{ file.Path }}">{{ file.Name }}</a> - {{ file.Size | number }}</li>
+            <li ng-repeat="file in dir.Files"><a ng-href="?path={{ file.Path }}">{{ file.Name }}</a></li>
         </ul>
     </div>
 </div>
